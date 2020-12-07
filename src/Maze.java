@@ -1,20 +1,24 @@
-// Jacob Schwartz - 9/9/2020
-// Maze App, first project created for Programming 2
+/**
+* @author Jacob Schwartz
+* @version 1.0
+* @since 2020-12-7
+* This is the class that makes, tests, and runs the mazes.
+*/
 
 /*
 
     Issues:
-    - Multiple exits? No exits? That shouldn't be happening...
+    - Multiple exits? That shouldn't be happening...
     - Bad generation
     - Sometimes it ends with a maze that can't be solved....
 
 */
 
+
 import java.util.Arrays;
 import java.util.Random;
 
-public class Maze {
-
+public class Maze{
   static boolean exitFound = false;
   static boolean isWall, isAir, isExit;
   static boolean isPossible = false;
@@ -22,39 +26,26 @@ public class Maze {
 
   static Random numberGen = new Random();
 
-  static int mazes = 1;
-
   // Starting direction, coords, and maze dimensions.
   static char direction = 'N';
-  static int startX = 1;
-  static int startY = 4;
-
   static int x = 1;
   static int y = 4;
   static int w = 9;
   static int h = 4;
 
-  static char[] row0 = new char[w];
-  static char[] row1 = new char[w];
-  static char[] row2 = new char[w];
-  static char[] row3 = new char[w];
-  static char[] row4 = new char[w];
-
-  static char[][] maze = { row0, row1, row2, row3, row4 };
-
   // (0,0) V
-  // static char[] row0 = { '#', '#', '#', '#', 'E', 'O', 'O', '#', 'O', 'O', };
-  // static char[] row1 = { '#', '#', '#', '#', '#', '#', 'O', 'O', '#', 'O', };
-  // static char[] row2 = { '#', 'O', 'O', 'O', 'O', 'O', '#', 'O', 'O', 'O', };
-  // static char[] row3 = { '#', 'O', '#', 'O', '#', 'O', '#', '#', '#', 'O', };
-  // static char[] row4 = { '#', 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', };
-  // Starting positon is here ^
+  static char[] row0 = { '#', '#', '#', '#', 'E', 'O', 'O', '#', 'O', 'O', };
+  static char[] row1 = { '#', '#', '#', '#', '#', '#', 'O', 'O', '#', 'O', };
+  static char[] row2 = { '#', 'O', 'O', 'O', 'O', 'O', '#', 'O', 'O', 'O', };
+  static char[] row3 = { '#', 'O', '#', 'O', '#', 'O', '#', '#', '#', 'O', };
+  static char[] row4 = { '#', 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', };
+  // Starting position is here ^
 
-  // This method generates a random maze 
+  // This method generates a random maze
   static void mazeGen() {
     boolean endMade = false;
 
-    //char[][] maze = { row0, row1, row2, row3, row4 };
+    char[][] maze = { row0, row1, row2, row3, row4 };
 
     for (char[] row : maze) {
       for (int i = 0; i < row.length; i++) {
@@ -70,13 +61,15 @@ public class Maze {
       }
     }
 
-    row4[1] = 'O';
+  // This doesn't work
+    row4[1] = 'J';
 
     // Print the maze
-    System.out.println("\nMaze #" + mazes);
-    for(char[] row: maze){
-      System.out.println(Arrays.toString(row));
-    }
+    System.out.println(Arrays.toString(row0));
+    System.out.println(Arrays.toString(row1));
+    System.out.println(Arrays.toString(row2));
+    System.out.println(Arrays.toString(row3));
+    System.out.println(Arrays.toString(row4));
   }
 
   // This method moves the robot forward
@@ -147,18 +140,17 @@ public class Maze {
       d = -1;
     }
 
-    // if (y + d == 0) {
-    //   return row0[x];
-    // } else if (y + d == 1) {
-    //   return row1[x];
-    // } else if (y + d == 2) {
-    //   return row2[x];
-    // } else if (y + d == 3) {
-    //   return row3[x];
-    // } else {
-    //   return row4[x];
-    // }
-    return maze[y + d] [x];
+    if (y + d == 0) {
+      return row0[x];
+    } else if (y + d == 1) {
+      return row1[x];
+    } else if (y + d == 2) {
+      return row2[x];
+    } else if (y + d == 3) {
+      return row3[x];
+    } else {
+      return row4[x];
+    }
   }
 
   // Column checker method
@@ -172,18 +164,17 @@ public class Maze {
       d = -1;
     }
 
-    // if (y == 0) {
-    //   return row0[x + d];
-    // } else if (y == 1) {
-    //   return row1[x + d];
-    // } else if (y == 2) {
-    //   return row2[x + d];
-    // } else if (y == 3) {
-    //   return row3[x + d];
-    // } else {
-    //   return row4[x + d];
-    // }
-    return maze[y] [x + d];
+    if (y == 0) {
+      return row0[x + d];
+    } else if (y == 1) {
+      return row1[x + d];
+    } else if (y == 2) {
+      return row2[x + d];
+    } else if (y == 3) {
+      return row3[x + d];
+    } else {
+      return row4[x + d];
+    }
   }
 
   // This method senses what is in front of the robot
@@ -270,9 +261,7 @@ public class Maze {
 
   static void mazeSolve() {
     trapped = false;
-    x = startX;
-    y = startY;
-   
+
     turnRight();
     sense();
 
@@ -310,46 +299,4 @@ public class Maze {
     }
     System.out.println("Location is " + x + ", " + y + ", and direction is " + direction);
   }
-
-  public static void main(String[] args) {
-    
-    System.out.println("---------------------------------------------------");
-
-    while (!isPossible) {
-
-      // Generate the maze and put the robot in the maze
-      mazeGen();
-      System.out.println("Entering the maze...");
-
-      for (int i = 0; i < w * h; i++) {
-        if (exitFound && !trapped) {
-          isPossible = true;
-          break;
-        }
-        // if(trapped){
-        //   break;
-        // }
-        mazeSolve();
-      }
-      if (!exitFound || trapped) {
-        System.out.println("This maze is impossible?");
-        mazes++;
-
-      }
-
-    }
-    System.out.println(mazes + " mazes were tried.");
-      // Print the maze
-      for(char[] row: maze){
-        System.out.println(Arrays.toString(row));
-      }
-
-
-    // while (!exitFound) {
-    // mazeSolve();
-
-    // }
-
-  }
-
 }
