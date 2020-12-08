@@ -2,7 +2,6 @@
 * @author Jacob Schwartz
 * @version 1.0
 * @since 2020-12-7
-* This is the class that makes, tests, and runs the mazes.
 */
 
 /*
@@ -14,35 +13,39 @@
 
 */
 
-
 import java.util.Arrays;
 import java.util.Random;
 
-public class Maze{
-  static boolean exitFound = false;
-  static boolean isWall, isAir, isExit;
-  static boolean isPossible = false;
-  static boolean trapped = false;
+/**
+ * This is the class that makes, tests, and runs the mazes.
+ */
+public class Maze {
+  boolean exitFound = false;
+  boolean isWall, isAir, isExit;
+  boolean isPossible = false;
+  boolean trapped = false;
 
-  static Random numberGen = new Random();
+  Random numberGen = new Random();
 
   // Starting direction, coords, and maze dimensions.
-  static char direction = 'N';
-  static int x = 1;
-  static int y = 4;
-  static int w = 9;
-  static int h = 4;
+  char direction = 'N';
+  int x = 1;
+  int y = 4;
+  int w = 9;
+  int h = 4;
 
-  // (0,0) V
-  static char[] row0 = { '#', '#', '#', '#', 'E', 'O', 'O', '#', 'O', 'O', };
-  static char[] row1 = { '#', '#', '#', '#', '#', '#', 'O', 'O', '#', 'O', };
-  static char[] row2 = { '#', 'O', 'O', 'O', 'O', 'O', '#', 'O', 'O', 'O', };
-  static char[] row3 = { '#', 'O', '#', 'O', '#', 'O', '#', '#', '#', 'O', };
-  static char[] row4 = { '#', 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', };
-  // Starting position is here ^
+  // (0,0) ....... V
+  char[] row0 = { '#', '#', '#', '#', 'E', 'O', 'O', '#', 'O', 'O', };
+  char[] row1 = { '#', '#', '#', '#', '#', '#', 'O', 'O', '#', 'O', };
+  char[] row2 = { '#', 'O', 'O', 'O', 'O', 'O', '#', 'O', 'O', 'O', };
+  char[] row3 = { '#', 'O', '#', 'O', '#', 'O', '#', '#', '#', 'O', };
+  char[] row4 = { '#', 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', };
+  // Starting position ^
 
-  // This method generates a random maze
-  static void mazeGen() {
+  /**
+   * This method generates a random maze
+   */
+  void mazeGen() {
     boolean endMade = false;
 
     char[][] maze = { row0, row1, row2, row3, row4 };
@@ -61,7 +64,7 @@ public class Maze{
       }
     }
 
-  // This doesn't work
+    // This doesn't work
     row4[1] = 'J';
 
     // Print the maze
@@ -72,8 +75,10 @@ public class Maze{
     System.out.println(Arrays.toString(row4));
   }
 
-  // This method moves the robot forward
-  static void moveForward() {
+  /**
+   * This method moves the robot forward
+   */
+  void moveForward() {
     System.out.println("-- Moved forward --");
     switch (direction) {
       case 'N':
@@ -91,8 +96,10 @@ public class Maze{
     }
   }
 
-  // This method turns the robot to the right
-  static void turnRight() {
+  /**
+   * This method turns the robot to the right
+   */
+  void turnRight() {
     // System.out.println("-- Turned right --");
     switch (direction) {
       case 'N':
@@ -110,8 +117,10 @@ public class Maze{
     }
   }
 
-  // This method turns the robot to the left
-  static void turnLeft() {
+  /**
+   * This method turns the robot to the left
+   */
+  void turnLeft() {
     // System.out.println("-- Turned left --");
     switch (direction) {
       case 'N':
@@ -129,8 +138,13 @@ public class Maze{
     }
   }
 
-  // Row checker method
-  static char rowCheck(String which) {
+  /**
+   * This is the row checker method
+   * 
+   * @param which This specifies whether to check up or down
+   * @return char Which is either O, #, or E
+   */
+  char rowCheck(String which) {
 
     int d = 0;
 
@@ -153,8 +167,13 @@ public class Maze{
     }
   }
 
-  // Column checker method
-  static char columnCheck(String which) {
+  /**
+   * This is the collumn checker method
+   * 
+   * @param which This specifies whether to check up or down
+   * @return char Which is either O, #, or E
+   */
+  char columnCheck(String which) {
 
     int d = 0;
 
@@ -177,8 +196,10 @@ public class Maze{
     }
   }
 
-  // This method senses what is in front of the robot
-  static void sense() {
+  /**
+   * This method senses what is in front of the robot
+   */
+  void sense() {
 
     isWall = false;
     isAir = false;
@@ -259,7 +280,10 @@ public class Maze{
     // }
   }
 
-  static void mazeSolve() {
+  /**
+   * This is the method that solves the maze.
+   */
+  void mazeSolve() {
     trapped = false;
 
     turnRight();
@@ -269,7 +293,7 @@ public class Maze{
       int wallsFound = 1;
       turnLeft();
       while (!(isAir || isExit)) {
-        if(wallsFound >= 4){
+        if (wallsFound >= 4) {
           exitFound = true;
           trapped = true;
           System.out.println("Umm... I think we're trapped. We found " + wallsFound + " walls.");

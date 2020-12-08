@@ -20,6 +20,8 @@ public class Data{
   */
   public boolean passwordCheck(){
     // TODO
+    boolean placeholder = true;
+    return placeholder;
   }
 
   /**
@@ -42,6 +44,8 @@ public class Data{
   */
   public String find(String Password){
     // TODO
+    String placeholder = "true";
+    return placeholder;
   }
 
 }
