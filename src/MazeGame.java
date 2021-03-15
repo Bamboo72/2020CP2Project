@@ -3,13 +3,14 @@
 
 public class MazeGame {
     static Graphics g = new Graphics();
-    static MazeGeneration gen = new MazeGeneration();
+    static MazeGeneration testMaze = new MazeGeneration(1, 10, 10);
     public static void main(String[] args){
         
-       
+       testMaze.mazeGen();
 
         g.hideActivePanel();
         g.sceneDisplay(1);
+        g.refresh();
         g.refresh();
 
        // g.dispose(); // Closes the open window

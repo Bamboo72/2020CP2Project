@@ -22,7 +22,8 @@ public class Graphics extends JFrame {
 
     public Graphics() {
         this.displayState = 0;
-        this.setBounds(10, 10, 1280, 760);
+        // this.setBounds(10, 10, 1280, 760);
+        this.setBounds(0, 0, 1295, 748);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
@@ -38,7 +39,7 @@ public class Graphics extends JFrame {
                 JLabel titleLabel = new JLabel(titleImage);
 
                 JPanel titlePanel = new JPanel();
-                titlePanel.setBounds(0, 0, 1271, 780); // 1271, 780
+                titlePanel.setBounds(0, 0, 1280, 720);
                 activePanel = titlePanel;
 
                 // titlePanel.add(titleLabel);
@@ -55,17 +56,23 @@ public class Graphics extends JFrame {
                 break;
             case 1:
                 System.out.println("Maze");
-           
-                MazeGame.gen.display(MazeGeneration.maze);
+
+                // I want the window to resize to the maze size, but I might have to close the window and open a new one that is the correct size...
+                int mazeSizeX = MazeGame.testMaze.x * 64; // Mutiply block count by size
+                int mazeSizeY = MazeGame.testMaze.y * 64;
+                MazeGame.testMaze.display(MazeGeneration.maze);
 
                 JPanel mazePanel = new JPanel();
                 mazePanel.setBackground(Color.BLACK);
-                mazePanel.setBounds(0, 0, 1271, 780); // 1271, 780
+                mazePanel.setBounds(0, 0, mazeSizeX, mazeSizeY);
+                frame.setSize(mazeSizeX, mazeSizeY);
+                frame.pack();
+                
+                
                 activePanel = mazePanel;
-            
+
                 con.add(mazePanel);
 
-            
                 break;
             case 2:
 
@@ -79,24 +86,36 @@ public class Graphics extends JFrame {
     }
 
     // This will create a maze block at the location parameters
-    public void mazeDisplay(int type, int x, int y){
+    public void mazeDisplay(int type, int x, int y) { // Block type and where to display
         ImageIcon mazeBlockImage = new ImageIcon();
-        if(type == 0){
-            mazeBlockImage = new ImageIcon(".//res//Space.png");
-        } else if(type == 1){
-            mazeBlockImage = new ImageIcon(".//res//Block.png");
-        } else if(type == 2){
-            mazeBlockImage = new ImageIcon(".//res//Exit.png");
-        } else if(type == 3){
-            mazeBlockImage = new ImageIcon(".//res//Entrance.png");
+
+        switch (type) {
+
+            case 0:
+                mazeBlockImage = new ImageIcon(".//res//0.png");
+                break;
+            case 1:
+                mazeBlockImage = new ImageIcon(".//res//4.png");
+                break;
+            case 2:
+                mazeBlockImage = new ImageIcon(".//res//Exit.png");
+                break;
+            case 3:
+                mazeBlockImage = new ImageIcon(".//res//Entrance.png");
+                break;
+
+            default:
+                mazeBlockImage = new ImageIcon();
+
         }
-        
+
         JLabel mbLabel = new JLabel(mazeBlockImage);
 
         JPanel mbPanel = new JPanel();
-        mbPanel.setBackground(new Color(0,0,0,0));
-        mbPanel.setBounds(x, y, 157, 157); //  157, 157
-    
+        mbPanel.setBackground(new Color(0, 0, 0, 0));
+        // mbPanel.setBounds(x, y, 157, 157); // 157, 157 for Large Blocks
+        mbPanel.setBounds(x, y, 64, 74); // 64, 64 for Small Blocks
+
         mbPanel.add(mbLabel);
         con.add(mbPanel);
     }
@@ -113,27 +132,4 @@ public class Graphics extends JFrame {
         }
     }
 
-    // Old main method
-    /*
-     * public static void main(String[] args) { Graphics g = new Graphics();
-     * 
-     * Scanner inputReader = new Scanner(System.in); boolean run = true; while (run)
-     * { System.out.
-     * println("Choose an option: (0) Title Screen (1) Credits (2) Start Screen (3) Character Creator (4) Exit"
-     * ); System.out.println("                  (5) Cycle ()"); g.displayState =
-     * inputReader.nextInt();
-     * 
-     * // This will Cycle through the first 4 options if (g.displayState == 5) { for
-     * (int i = 0; i < 4; i++) { g.displayState = i; g.hideActivePanel();
-     * g.display(displayState); g.refresh(); try { Thread.sleep(4000); } catch
-     * (InterruptedException e) { // TODO Auto-generated catch block
-     * e.printStackTrace(); } } run = false; }
-     * 
-     * if (g.displayState == 4) { run = false;
-     * 
-     * }
-     * 
-     * g.hideActivePanel(); g.display(displayState); g.refresh(); } g.dispose(); //
-     * Closes the open window inputReader.close(); }
-     */
 }
