@@ -32,80 +32,132 @@ public class Graphics extends JFrame {
     // This will display different things based on the displayState
     public void sceneDisplay(int displayNum) {
         switch (displayNum) {
-            case 0:
-                System.out.println("Title Screen");
+        case 0:
+            System.out.println("Title Screen");
 
-                ImageIcon titleImage = new ImageIcon(".//res//TitleScreen.png");
-                JLabel titleLabel = new JLabel(titleImage);
+            ImageIcon titleImage = new ImageIcon(".//res//TitleScreen.png");
+            JLabel titleLabel = new JLabel(titleImage);
 
-                JPanel titlePanel = new JPanel();
-                titlePanel.setBounds(0, 0, 1280, 720);
-                activePanel = titlePanel;
+            JPanel titlePanel = new JPanel();
+            titlePanel.setBounds(0, 0, 1280, 720);
+            activePanel = titlePanel;
 
-                // titlePanel.add(titleLabel);
-                // con.add(titlePanel);
+            // titlePanel.add(titleLabel);
+            // con.add(titlePanel);
 
-                ImageIcon startButton = new ImageIcon(".//res//StartButton.png");
-                JButton button = new JButton(startButton);
-                button.setBounds(483, 390, 305, 95); // 305, 95
+            ImageIcon startButton = new ImageIcon(".//res//StartButton.png");
+            JButton button = new JButton(startButton);
+            button.setBounds(483, 390, 305, 95); // 305, 95
 
-                titlePanel.add(titleLabel);
-                con.add(button);
-                con.add(titlePanel);
+            titlePanel.add(titleLabel);
+            con.add(button);
+            con.add(titlePanel);
 
-                break;
-            case 1:
-                System.out.println("Maze");
+            break;
+        case 1:
+            System.out.println("Maze");
 
-                // I want the window to resize to the maze size, but I might have to close the window and open a new one that is the correct size...
-                int mazeSizeX = MazeGame.testMaze.x * 64; // Mutiply block count by size
-                int mazeSizeY = MazeGame.testMaze.y * 64;
-                MazeGame.testMaze.display(MazeGeneration.maze);
+            // I want the window to resize to the maze size, but I might have to close the
+            // window and open a new one that is the correct size...
+            int mazeSizeX = MazeGame.testMaze.x * 64; // Mutiply block count by size
+            int mazeSizeY = MazeGame.testMaze.y * 64;
+            MazeGame.testMaze.display(MazeGeneration.maze);
 
-                JPanel mazePanel = new JPanel();
-                mazePanel.setBackground(Color.BLACK);
-                mazePanel.setBounds(0, 0, mazeSizeX, mazeSizeY);
-                frame.setSize(mazeSizeX, mazeSizeY);
-                frame.pack();
-                
-                
-                activePanel = mazePanel;
+            JPanel mazePanel = new JPanel();
+            mazePanel.setBackground(Color.BLACK);
+            mazePanel.setBounds(0, 0, mazeSizeX, mazeSizeY);
+            frame.setSize(mazeSizeX, mazeSizeY);
+            frame.pack();
 
-                con.add(mazePanel);
+            activePanel = mazePanel;
 
-                break;
-            case 2:
+            con.add(mazePanel);
 
-                break;
-            case 3:
+            break;
+        case 2:
 
-                break;
-            default:
-                System.out.println("Unknown number/ not yet implemented");
+            break;
+        case 3:
+
+            break;
+        default:
+            System.out.println("Unknown number/ not yet implemented");
         }
     }
 
     // This will create a maze block at the location parameters
-    public void mazeDisplay(int type, int x, int y) { // Block type and where to display
+    public void mazeDisplay(char type, int x, int y) { // Block type and where to display
         ImageIcon mazeBlockImage = new ImageIcon();
 
         switch (type) {
 
-            case 0:
-                mazeBlockImage = new ImageIcon(".//res//0.png");
-                break;
-            case 1:
-                mazeBlockImage = new ImageIcon(".//res//4.png");
-                break;
-            case 2:
-                mazeBlockImage = new ImageIcon(".//res//Exit.png");
-                break;
-            case 3:
-                mazeBlockImage = new ImageIcon(".//res//Entrance.png");
-                break;
+        case 'O':
+            mazeBlockImage = new ImageIcon(".//res//0.png");
+            break;
+        case '#':
+            mazeBlockImage = new ImageIcon(".//res//4.png");
+            break;
+        case 'E':
+            mazeBlockImage = new ImageIcon(".//res//Exit.png");
+            break;
+        case 'S':
+            mazeBlockImage = new ImageIcon(".//res//Entrance.png");
+            break;
 
-            default:
-                mazeBlockImage = new ImageIcon();
+        case '4':
+            mazeBlockImage = new ImageIcon(".//res//4.png");
+            break;
+        case '0':
+            mazeBlockImage = new ImageIcon(".//res//0.png");
+            break;
+        case '=':
+            mazeBlockImage = new ImageIcon(".//res//=.png");
+            break;
+        case 'P':
+            mazeBlockImage = new ImageIcon(".//res//P.png");
+            break;
+
+        case 'N':
+            mazeBlockImage = new ImageIcon(".//res//N.png");
+            break;
+        case ')':
+            mazeBlockImage = new ImageIcon(".//res//).png");
+            break;
+        case 'U':
+            mazeBlockImage = new ImageIcon(".//res//U.png");
+            break;
+        case 'C':
+            mazeBlockImage = new ImageIcon(".//res//C.png");
+            break;
+
+        case '7':
+            mazeBlockImage = new ImageIcon(".//res//7.png");
+            break;
+        case 'J':
+            mazeBlockImage = new ImageIcon(".//res//J.png");
+            break;
+        case 'L':
+            mazeBlockImage = new ImageIcon(".//res//L.png");
+            break;
+        case 'R':
+            mazeBlockImage = new ImageIcon(".//res//R.png");
+            break;
+
+        case 'T':
+            mazeBlockImage = new ImageIcon(".//res//T.png");
+            break;
+        case 'I':
+            mazeBlockImage = new ImageIcon(".//res//I.png");
+            break;
+        case 'B':
+            mazeBlockImage = new ImageIcon(".//res//B.png");
+            break;
+        case '1':
+            mazeBlockImage = new ImageIcon(".//res//1.png");
+            break;
+
+        default:
+            mazeBlockImage = new ImageIcon();
 
         }
 
