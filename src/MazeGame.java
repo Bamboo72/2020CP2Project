@@ -7,13 +7,14 @@ public class MazeGame {
     //static ControllableCharacter cc = new ControllableCharacter('N', testMaze.currentX, testMaze.currentY);
 
     static MazeGeneration theMaze;
+    static ControllableCharacter cc;
 
     public static void main(String[] args) {
 
-        
+
 
         //testMaze.mazeGen();
-        
+
         g.hideActivePanel();
         g.sceneDisplay(0);
         g.refresh();

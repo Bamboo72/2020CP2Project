@@ -13,6 +13,8 @@ import java.awt.Container;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 import java.util.ArrayList;
 
@@ -79,6 +81,9 @@ public class Graphics extends JFrame {
 
             activePanel = mazePanel;
 
+            MousePressListener mpl = new MousePressListener();
+            mazePanel.addMouseListener(mpl);
+
             ImageIcon XButton = new ImageIcon(".//res//XButton.png");
             JButton backButton = new JButton(XButton);
             ActionListener goHome = new GoToHomeScreen();
@@ -88,7 +93,7 @@ public class Graphics extends JFrame {
 
             con.add(backButton);
             con.add(mazePanel);
-        
+
             break;
         case 2:
 
@@ -192,7 +197,7 @@ public class Graphics extends JFrame {
     // This will display the character at the current location
     public void characterDisplay(char dir, int x, int y){
         ImageIcon characterImage = new ImageIcon();
-       
+
         if(dir == 'N'){
             characterImage = new ImageIcon(".//res//CharacterN.png");
         } else if(dir == 'E'){
@@ -202,7 +207,7 @@ public class Graphics extends JFrame {
         } else if(dir == 'W'){
             characterImage = new ImageIcon(".//res//CharacterW.png");
         }
-        
+
         JLabel characterLabel = new JLabel(characterImage);
         JPanel characterPanel = new JPanel();
         characterPanel.setBackground(new Color(0, 0, 0, 0));
@@ -229,7 +234,7 @@ public class Graphics extends JFrame {
             panel.setVisible(false);
            // panelList.remove(panel);
         }
-        
+
     }
 
 }
@@ -240,7 +245,7 @@ class ClickListener implements ActionListener {
     public void actionPerformed(ActionEvent event) {
 
         MazeGame.theMaze = new MazeGeneration(1, 10, 10);
-        ControllableCharacter cc = new ControllableCharacter('N', MazeGame.theMaze.currentX, MazeGame.theMaze.currentY);
+        MazeGame.cc = new ControllableCharacter('N', 5, 9);
 
         MazeGame.theMaze.mazeReset();
         MazeGame.theMaze = new MazeGeneration(1, 10, 10); // Later change to user input sizes? Or just make multiple buttons that make different size mazes
@@ -261,4 +266,35 @@ class GoToHomeScreen implements ActionListener {
         MazeGame.g.sceneDisplay(0);
         MazeGame.g.refresh();
     }
+}
+
+// This is the MouseListener that moves the character
+class MousePressListener implements MouseListener {
+
+  public void mouseClicked(MouseEvent event) {
+      int x = event.getX();
+      int y = event.getY();
+
+      if(MazeGame.cc.dir == 'N' && y >= MazeGeneration.currentY){
+          System.out.println("Up");
+          MazeGeneration.currentY--;
+      } else if(MazeGame.cc.dir == 'E' && x >= MazeGeneration.currentX){
+          System.out.println("Right");
+          MazeGeneration.currentX++;
+      } else if(MazeGame.cc.dir == 'S' && y < MazeGeneration.currentY){
+          System.out.println("Down");
+          MazeGeneration.currentY++;
+      } else if(MazeGame.cc.dir == 'W' && x < MazeGeneration.currentX){
+          System.out.println("Left");
+          MazeGeneration.currentX--;
+      }
+
+  }
+
+
+  public void mouseEntered(MouseEvent event) { }
+  public void mouseExited(MouseEvent event) { }
+  public void mousePressed(MouseEvent event) { }
+  public void mouseReleased(MouseEvent event) { }
+
 }

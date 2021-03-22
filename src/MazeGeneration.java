@@ -7,7 +7,7 @@
         I found a new place the loop is happening, see the bottom of OldCode.txt for an example.
     - Character and mouse events? Do I need to add the mouseEvent to something? the variable mpl isn't used
     + Solved (See in OldCode.txt) - New mazes aren't being made
-    
+
 */
 
 import java.util.ArrayList;
@@ -85,6 +85,7 @@ public class MazeGeneration {
                 if (counter == 4) { // If all sides have been visited already
                     currentX = getLastSplit('X');
                     currentY = getLastSplit('Y');
+                    splits.remove(splits.size() - 1);
                     System.out.println(splits);
                     System.out.println("The new coords are now: " + currentX + "," + currentY);
                     tryBox = false;
@@ -227,11 +228,9 @@ public class MazeGeneration {
             }
         }
 
-        if (type == 'X') {
-            return x;
-        } else {
-            return y;
-        }
+        if (type == 'X')  return x;
+         else  return y;
+
     }
 
     // This method will return what the current cell should become depending on what
@@ -368,6 +367,8 @@ public class MazeGeneration {
     public void mazeReset() {
         hasBeenReached.clear();
         maze.clear();
+        // I need to remove the character
+
     }
 
     public void display(List<List<Character>> maze) { // This takes the maze array and feeds the block types and
