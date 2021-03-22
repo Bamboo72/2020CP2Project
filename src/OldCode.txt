@@ -1,0 +1,86 @@
+This is just a textfile to hold some of my old code that I wanted to save just in case or to look at later.
+
+- Old way of making the maze
+/* 
+  // static char[] row0 = { '#', '#', '#', '#', 'E', 'O', 'O', '#', 'O', 'O', }; 
+  // static char[] row1 = { '#', '#', '#', '#', '#', '#', 'O', 'O', '#', 'O', }; 
+  // static char[] row2 = { '#', 'O', 'O', 'O', 'O', 'O', '#', 'O','O', 'O', }; 
+  // static char[] row3 = { '#', 'O', '#', 'O', '#', 'O', '#', '#', '#', 'O', }; 
+  // static char[] row4 = { '#', 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', }; 
+  // static char[] row5 = { '#', 'O', '#', 'O', '#','O', 'O', 'O', 'O', 'O', }; 
+  // static char[] row6 = { '#', 'O', '#', 'O','#', 'O', 'O', 'O', 'O', 'O', };
+  // static char[] row7 = { '#', 'O', '#','O', '#', 'O', 'O', 'O', 'O', 'O', }; 
+  // static char[] row8 = { '#', 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', }; 
+  // static char[] row9 = { '#','O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', };
+  // static char[] row10 = {'#', 'O', '#', 'O', '#', 'O', '#', 'O', '#', 'O', '#', 'O', '#', 'O', '#', 'O', '#', 'O', '#', 'O',};
+ 
+  //static char[][] maze = { row0, row1, row2, row3, row4, };
+  
+ */
+
+- Another way of making the maze, pre-generated mazes
+
+// static List<Character> row0 = new ArrayList<Character>(Arrays.asList('#', '#', '#', '#', 'E', 'O', 'O', '#', 'O', 'O'));
+// static List<Character> row1 = new ArrayList<Character>(Arrays.asList('#', '#', '#', '#', '#', '#', 'O', 'O', '#', 'O'));
+// static List<Character> row2 = new ArrayList<Character>(Arrays.asList('#', 'O', 'O', 'O', 'O', 'O', '#', 'O', 'O', 'O'));
+// static List<Character> row3 = new ArrayList<Character>(Arrays.asList('#', 'O', '#', 'O', '#', 'O', '#', '#', '#', 'O'));
+// static List<Character> row4 = new ArrayList<Character>(Arrays.asList('#', 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O'));
+
+// static List<List<Character>> maze = new
+// ArrayList<List<Character>>(Arrays.asList(row0, row1, row2, row3, row4));
+// Code from https://stackoverflow.com/questions/10768170/how-do-i-declare-a-2d-string-arraylist
+
+
+- Some brainstorming/ writing out what I need to do:
+             /* 
+             * I would like to possibly use methods for these actions? Test if the cell currentY-1
+             * (for North) is visited or not if yes: try another direciton and increase a
+             * counter to see if all sides are checked -> if all sides are checked then back
+             * up to the saved location if no: depending on the current cell type, change
+             * the current cell type and the targeted cell to the correct type. Make the
+             * targeted cell the new current cell. if the counter was less than 4 then save
+             * the old current cell as the saved cell
+             * 
+             */
+
+
+- First time I got the program to successfully make a two mazes in one run
+[N, #, #, #, #, #, #, #, #, #]
+[P, #, #, #, #, #, #, #, #, #]
+[P, R, 7, #, #, #, #, #, #, #]
+[L, J, P, #, #, #, #, #, #, #]
+[R, 7, P, #, #, #, #, #, #, #]
+[P, L, J, #, #, #, #, #, #, #]
+[L, =, =, 7, #, #, #, #, #, #]
+[R, 7, R, J, #, #, #, #, #, #]
+[P, L, J, #, #, #, #, #, #, #]
+[L, =, =, =, =, S, #, #, #, #]
+
+[C, 7, #, #, #, #, #, #, #, #]
+[#, P, #, #, #, #, #, #, #, #]
+[R, J, #, #, #, #, #, #, #, #]
+[P, #, #, #, #, #, #, #, #, #]
+[P, #, #, #, #, #, #, #, #, #]
+[P, #, #, #, #, #, #, #, #, #]
+[P, #, #, #, #, #, #, #, #, #]
+[L, =, 7, #, #, #, #, #, #, #]
+[#, #, P, #, #, #, #, #, #, #]
+[#, #, L, =, =, S, #, #, #, #]
+
+- This is a loop the code is getting stuck in
+Counter: 0
+Counter: 1
+Counter: 2
+Counter: 3
+Counter: 4
+[5,9, 4,9, 3,9, 2,9, 1,9, 0,9, 0,8, 0,7, 0,6, 1,6, 1,5, 0,5, 0,4, 1,4, 2,4, 2,5, 2,6, 3,6, 4,6, 4,7, 5,7, 5,6, 6,6, 6,5, 6,4, 6,3, 6,2, 5,2, 5,3, 4,3, 3,3, 3,2, 3,1, 4,1, 4,0, 5,0, 6,0, 7,0, 8,0, 9,0, 9,1, 9,2, 9,3, 9,4, 
+8,4, 8,3, 8,2, 7,2, 7,3, 7,4, 7,5, 8,5, 8,6, 9,6, 9,7, 9,8, 8,8, 8,9, 7,9, 6,9, 5,9, 5,8, 6,8, 6,7, 7,7]
+The new coords are now: 7,7
+Counter: 0
+Counter: 1
+Counter: 2
+Counter: 3
+Counter: 4
+[5,9, 4,9, 3,9, 2,9, 1,9, 0,9, 0,8, 0,7, 0,6, 1,6, 1,5, 0,5, 0,4, 1,4, 2,4, 2,5, 2,6, 3,6, 4,6, 4,7, 5,7, 5,6, 6,6, 6,5, 6,4, 6,3, 6,2, 5,2, 5,3, 4,3, 3,3, 3,2, 3,1, 4,1, 4,0, 5,0, 6,0, 7,0, 8,0, 9,0, 9,1, 9,2, 9,3, 9,4, 
+8,4, 8,3, 8,2, 7,2, 7,3, 7,4, 7,5, 8,5, 8,6, 9,6, 9,7, 9,8, 8,8, 8,9, 7,9, 6,9, 5,9, 5,8, 6,8, 6,7, 7,7]
+The new coords are now: 7,7

@@ -3,16 +3,22 @@
 
 public class MazeGame {
     static Graphics g = new Graphics();
-    static MazeGeneration testMaze = new MazeGeneration(1, 10, 10);
-    public static void main(String[] args){
+    //static MazeGeneration testMaze = new MazeGeneration(1, 10, 10);
+    //static ControllableCharacter cc = new ControllableCharacter('N', testMaze.currentX, testMaze.currentY);
+
+    static MazeGeneration theMaze;
+
+    public static void main(String[] args) {
+
         
-       testMaze.mazeGen();
 
+        //testMaze.mazeGen();
+        
         g.hideActivePanel();
-        g.sceneDisplay(1);
+        g.sceneDisplay(0);
         g.refresh();
         g.refresh();
 
-       // g.dispose(); // Closes the open window
+        // g.dispose(); // Closes the open window
     }
 }

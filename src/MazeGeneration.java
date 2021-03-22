@@ -2,12 +2,15 @@
 // The maze generation class for my Programming 2 individual project: Maze Game
 
 /*
-    Notes:
-    Look into using ArrayLists for the maze arrays
+    Problems to fix:
+    - Infinite loop -> I think I need an arrayList to add the split cells to. if counter == 4 then return to the most recent split
+        I found a new place the loop is happening, see the bottom of OldCode.txt for an example.
+    - Character and mouse events? Do I need to add the mouseEvent to something? the variable mpl isn't used
+    + Solved (See in OldCode.txt) - New mazes aren't being made
+    
 */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -36,7 +39,10 @@ public class MazeGeneration {
 
     static List<List<Character>> hasBeenReached = new ArrayList<List<Character>>();
     static List<List<Character>> maze = new ArrayList<List<Character>>();
-    int currentX, currentY;
+    static int currentX;
+    static int currentY;
+    static ArrayList<String> splits = new ArrayList<String>();
+    boolean generate = true;
 
     public void mazeGen() {
 
@@ -61,31 +67,26 @@ public class MazeGeneration {
         // Choose a random direciton and carve a path if the cell is not visited yet.
         currentX = x / 2;
         currentY = y - 1;
+        // int lastSplitX = 0;
+        // int lastSplitY = 0;
         maze.get(currentY).set(currentX, 'S'); // This lets you set a tile as something new, and sets the starting point
         Random randomDir = new Random();
 
-        for (int i = 0; i < 201; i++) { // I randomly selected 10, so 10 tiles should be carved out
-            // Use a while loop that checks if any tiles are still #?
-            //while(!checkIfBoardDone()){
+        // for (int i = 0; i < 201; i++) { // I randomly selected 10, so 10 tiles should
+        // be carved out
+        // Use a while loop that checks if any tiles are still #?
+        while (generate) {
             int dir = randomDir.nextInt(4) + 1;
             int counter = 0;
-            int lastSplitX = 0;
-            int lastSplitY = 0;
             boolean tryBox = true;
-            /*
-             * I would like to possibly use methods for these: Test if the cell currentY-1
-             * (for North) is visited or not if yes: try another direciton and increase a
-             * counter to see if all sides are checked -> if all sides are checked then back
-             * up to the saved location if no: depending on the current cell type, change
-             * the current cell type and the targeted cell to the correct type. Make the
-             * targeted cell the new current cell. if the counter was less than 4 then save
-             * the old current cell as the saved cell
-             * 
-             */
+
             while (tryBox) {
+               System.out.println("Counter: " + counter);
                 if (counter == 4) { // If all sides have been visited already
-                    currentX = lastSplitX;
-                    currentY = lastSplitY;
+                    currentX = getLastSplit('X');
+                    currentY = getLastSplit('Y');
+                    System.out.println(splits);
+                    System.out.println("The new coords are now: " + currentX + "," + currentY);
                     tryBox = false;
                 }
                 if (dir == 1) { // North
@@ -100,8 +101,7 @@ public class MazeGeneration {
                             maze.get(currentY - 1).set(currentX, 'N'); // Change the targeted cell
 
                             if (counter < 4) {
-                                lastSplitX = currentX;
-                                lastSplitY = currentY;
+                                recordLastSplit(currentX, currentY);
                             }
 
                             currentY--; // Go up
@@ -125,8 +125,7 @@ public class MazeGeneration {
                             maze.get(currentY).set(currentX + 1, ')'); // Change the targeted cell
 
                             if (counter < 4) {
-                                lastSplitX = currentX;
-                                lastSplitY = currentY;
+                                recordLastSplit(currentX, currentY);
                             }
 
                             currentX++; // Go right
@@ -149,8 +148,7 @@ public class MazeGeneration {
                             maze.get(currentY + 1).set(currentX, 'U'); // Change the targeted cell
 
                             if (counter < 4) {
-                                lastSplitX = currentX;
-                                lastSplitY = currentY;
+                                recordLastSplit(currentX, currentY);
                             }
 
                             currentY++; // Go down
@@ -174,8 +172,7 @@ public class MazeGeneration {
                             maze.get(currentY).set(currentX - 1, 'C'); // Change the targeted cell
 
                             if (counter < 4) {
-                                lastSplitX = currentX;
-                                lastSplitY = currentY;
+                                recordLastSplit(currentX, currentY);
                             }
 
                             currentX--; // Go left
@@ -192,16 +189,49 @@ public class MazeGeneration {
                     System.out.println("Something went wrong.. The direction shouldn't be " + dir + "!");
                 }
             }
-
+            checkIfBoardDone();
         }
 
         // This prints out the maze
+        System.out.println("_____________________________");
         for (
 
         List<Character> line : maze) {
             System.out.println(line);
         }
+        System.out.println("_____________________________");
+        for (
 
+        List<Character> line : hasBeenReached) {
+            System.out.println(line);
+        }
+
+    }
+
+    // Adds the last split cell to the ArrayList of splits to be backtracked to
+    // later
+    public void recordLastSplit(int lastSplitX, int lastSplitY) {
+        splits.add("" + lastSplitX + "," + lastSplitY);
+
+    }
+
+    // Returns the most recent split coordinate- x or y depending on the type
+    public int getLastSplit(char type) {
+        String coord = splits.get(splits.size() - 1);
+        int x = -1, y = -1;
+
+        for (int i = 0; i < coord.length(); i++) {
+            if (coord.charAt(i) == ',') {
+                x = Integer.parseInt(coord.substring(0, i));
+                y = Integer.parseInt(coord.substring(i + 1, coord.length()));
+            }
+        }
+
+        if (type == 'X') {
+            return x;
+        } else {
+            return y;
+        }
     }
 
     // This method will return what the current cell should become depending on what
@@ -213,6 +243,8 @@ public class MazeGeneration {
         char newCurrentCell = 'S';
 
         switch (currentCell) {
+
+        // Maybe make a case for S and E
 
         case 'N':
             if (direction == 'N') {
@@ -313,23 +345,29 @@ public class MazeGeneration {
             }
             break;
         default:
-            System.out.println("This shouldn't have printed. The currentCell char was " + currentCell);
+            System.out.println("The default for the tileSwapper printed. The currentCell char was " + currentCell);
         }
 
         return newCurrentCell;
     }
 
-    public boolean checkIfBoardDone(){
+    public void checkIfBoardDone() {
         for (List<Character> row : hasBeenReached) {
-            for (int i = 0; i < row.size();) {
-                if(row.get(i) == '#'){
-                    return false;
-                } else {
-                    return true;
+            for (int i = 0; i < row.size(); i++) {
+                if (row.get(i) == '#') {
+                    generate = true;
+                    return;
                 }
             }
         }
-        return false;
+        System.out.println("!Generation stopped!");
+        generate = false;
+
+    }
+
+    public void mazeReset() {
+        hasBeenReached.clear();
+        maze.clear();
     }
 
     public void display(List<List<Character>> maze) { // This takes the maze array and feeds the block types and
@@ -349,40 +387,3 @@ public class MazeGeneration {
     }
 
 }
-
-/*
- * Old way of making the maze
- * 
- * // static char[] row0 = { '#', '#', '#', '#', 'E', 'O', 'O', '#', 'O', 'O',
- * }; // static char[] row1 = { '#', '#', '#', '#', '#', '#', 'O', 'O', '#',
- * 'O', }; // static char[] row2 = { '#', 'O', 'O', 'O', 'O', 'O', '#', 'O',
- * 'O', 'O', }; // static char[] row3 = { '#', 'O', '#', 'O', '#', 'O', '#',
- * '#', '#', 'O', }; // static char[] row4 = { '#', 'O', '#', 'O', '#', 'O',
- * 'O', 'O', 'O', 'O', }; // static char[] row5 = { '#', 'O', '#', 'O', '#',
- * 'O', 'O', 'O', 'O', 'O', }; // static char[] row6 = { '#', 'O', '#', 'O',
- * '#', 'O', 'O', 'O', 'O', 'O', }; // static char[] row7 = { '#', 'O', '#',
- * 'O', '#', 'O', 'O', 'O', 'O', 'O', }; // static char[] row8 = { '#', 'O',
- * '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', }; // static char[] row9 = { '#',
- * 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O', }; // static char[] row10 = {
- * '#', 'O', '#', 'O', '#', 'O', '#', 'O', '#', 'O', // '#', 'O', '#', 'O', '#',
- * 'O', '#', 'O', '#', 'O',};
- * 
- * //static char[][] maze = { row0, row1, row2, row3, row4, };
- * 
- */
-
-// static List<Character> row0 = new ArrayList<Character>(Arrays.asList('#',
-// '#', '#', '#', 'E', 'O', 'O', '#', 'O', 'O'));
-// static List<Character> row1 = new ArrayList<Character>(Arrays.asList('#',
-// '#', '#', '#', '#', '#', 'O', 'O', '#', 'O'));
-// static List<Character> row2 = new ArrayList<Character>(Arrays.asList('#',
-// 'O', 'O', 'O', 'O', 'O', '#', 'O', 'O', 'O'));
-// static List<Character> row3 = new ArrayList<Character>(Arrays.asList('#',
-// 'O', '#', 'O', '#', 'O', '#', '#', '#', 'O'));
-// static List<Character> row4 = new ArrayList<Character>(Arrays.asList('#',
-// 'O', '#', 'O', '#', 'O', 'O', 'O', 'O', 'O'));
-
-// static List<List<Character>> maze = new
-// ArrayList<List<Character>>(Arrays.asList(row0, row1, row2, row3, row4)); //
-// Code from
-// https://stackoverflow.com/questions/10768170/how-do-i-declare-a-2d-string-arraylist
