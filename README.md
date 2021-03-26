@@ -26,4 +26,4 @@ The Year 2 Concepts I focused on were:
 I've put all the HTML files generated from JavaDoc here:
 * [Documentation](https://github.com/Bamboo72/2020CP2Project/tree/main/doc)  
 
-![TitleScreen](https://github.com/Bamboo72/2020CP2Project/blob/main/images/complete.PNG)
+![Complete](https://github.com/Bamboo72/2020CP2Project/blob/main/images/complete.PNG)
