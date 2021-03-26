@@ -1,23 +1,27 @@
 // Jacob Schwartz - 2/6/2021
 // The maze generation class for my Programming 2 individual project: Maze Game
 
-/*
-    Problems to fix:
-    - Infinite loop -> I think I need an arrayList to add the split cells to. if counter == 4 then return to the most recent split
-        I found a new place the loop is happening, see the bottom of OldCode.txt for an example.
-    - Character and mouse events? Do I need to add the mouseEvent to something? the variable mpl isn't used
-    + Solved (See in OldCode.txt) - New mazes aren't being made
-
-*/
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This is the class that handles maze generation so far with one type that uses
+ * the recursive backtracker method which I learned from
+ * http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap
+ */
 public class MazeGeneration {
 
     int type, x, y;
 
+    /**
+     * This is the MazeGeneration constructor, and takes in the maze type and size
+     * parameters
+     * 
+     * @param type
+     * @param x
+     * @param y
+     */
     public MazeGeneration(int type, int x, int y) { // Maze type and size parameters
         this.type = type;
         this.x = x;
@@ -44,6 +48,9 @@ public class MazeGeneration {
     static ArrayList<String> splits = new ArrayList<String>();
     boolean generate = true;
 
+    /**
+     * This method generates the maze
+     */
     public void mazeGen() {
 
         // Make new blank mazes of size x and y. One for the actual maze, one to track
@@ -67,27 +74,18 @@ public class MazeGeneration {
         // Choose a random direciton and carve a path if the cell is not visited yet.
         currentX = x / 2;
         currentY = y - 1;
-        // int lastSplitX = 0;
-        // int lastSplitY = 0;
-        maze.get(currentY).set(currentX, 'S'); // This lets you set a tile as something new, and sets the starting point
         Random randomDir = new Random();
 
-        // for (int i = 0; i < 201; i++) { // I randomly selected 10, so 10 tiles should
-        // be carved out
-        // Use a while loop that checks if any tiles are still #?
         while (generate) {
             int dir = randomDir.nextInt(4) + 1;
             int counter = 0;
             boolean tryBox = true;
 
             while (tryBox) {
-               System.out.println("Counter: " + counter);
                 if (counter == 4) { // If all sides have been visited already
                     currentX = getLastSplit('X');
                     currentY = getLastSplit('Y');
                     splits.remove(splits.size() - 1);
-                    System.out.println(splits);
-                    System.out.println("The new coords are now: " + currentX + "," + currentY);
                     tryBox = false;
                 }
                 if (dir == 1) { // North
@@ -192,31 +190,29 @@ public class MazeGeneration {
             }
             checkIfBoardDone();
         }
-
-        // This prints out the maze
-        System.out.println("_____________________________");
-        for (
-
-        List<Character> line : maze) {
-            System.out.println(line);
-        }
-        System.out.println("_____________________________");
-        for (
-
-        List<Character> line : hasBeenReached) {
-            System.out.println(line);
-        }
+        maze.get(0).set(0, 'E');
 
     }
 
-    // Adds the last split cell to the ArrayList of splits to be backtracked to
-    // later
+    /**
+     * This method adds the last split cell to the ArrayList of splits to be
+     * backtracked to later
+     * 
+     * @param lastSplitX
+     * @param lastSplitY
+     */
     public void recordLastSplit(int lastSplitX, int lastSplitY) {
         splits.add("" + lastSplitX + "," + lastSplitY);
 
     }
 
-    // Returns the most recent split coordinate- x or y depending on the type
+    /**
+     * This method returns the most recent split coordinate: x or y depending on the
+     * type
+     * 
+     * @param type
+     * @return int x or y, depending on the type that is passed in
+     */
     public int getLastSplit(char type) {
         String coord = splits.get(splits.size() - 1);
         int x = -1, y = -1;
@@ -228,22 +224,30 @@ public class MazeGeneration {
             }
         }
 
-        if (type == 'X')  return x;
-         else  return y;
+        if (type == 'X')
+            return x;
+        else
+            return y;
 
     }
 
-    // This method will return what the current cell should become depending on what
-    // type it is and the direction.
     // The targeted cell will always be unvisited at first, and then become either
     // ), C, N, or U
     // It's the current cell that will change depending on the type and direction
+    /**
+     * This method will return what the current cell should become depending on what
+     * type it is and the direction
+     * 
+     * @param currentCell
+     * @param direction
+     * @return char the newCurrentCell which the old currentCell will become
+     */
     public char tileSwapper(char currentCell, char direction) {
-        char newCurrentCell = 'S';
+        char newCurrentCell = '4';
 
         switch (currentCell) {
 
-        // Maybe make a case for S and E
+        // Maybe make a case for S and E?
 
         case 'N':
             if (direction == 'N') {
@@ -350,6 +354,10 @@ public class MazeGeneration {
         return newCurrentCell;
     }
 
+    /**
+     * This method checks if every tile in the maze has been reached or not. It will
+     * stop generation if every tile has been reached.
+     */
     public void checkIfBoardDone() {
         for (List<Character> row : hasBeenReached) {
             for (int i = 0; i < row.size(); i++) {
@@ -359,22 +367,29 @@ public class MazeGeneration {
                 }
             }
         }
-        System.out.println("!Generation stopped!");
         generate = false;
 
     }
 
+    /**
+     * This method resets the 2D ArrayLists that make up the maze
+     */
     public void mazeReset() {
         hasBeenReached.clear();
         maze.clear();
-        // I need to remove the character
 
     }
 
-    public void display(List<List<Character>> maze) { // This takes the maze array and feeds the block types and
-                                                      // positions to the Graphics class
+    /**
+     * This method takes the maze array and feeds the block types and positions to
+     * the Graphics class
+     * 
+     * @param maze
+     */
+    public void display(List<List<Character>> maze) {
         int rowNum = 0;
         char type = 'O';
+        MazeGame.g.characterDisplay(MazeGame.cc);
         for (List<Character> row : maze) {
             for (int i = 0; i < row.size(); i++) {
 
@@ -384,7 +399,17 @@ public class MazeGeneration {
             }
             rowNum++;
         }
-        g.mazeDisplay('E', 0, 0); // An attempt to fix the random square appearing in the middle of the screen
+    }
+
+    /**
+     * This method returns the tile type at the passed in x and y location
+     * 
+     * @param x
+     * @param y
+     * @return char they type of tile at the x and y location
+     */
+    public static char getTileType(int x, int y) {
+        return maze.get(y).get(x);
     }
 
 }

@@ -13,62 +13,103 @@ import java.awt.Container;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
 
 import java.util.ArrayList;
 
+/**
+ * This class handles all the graphics for the project
+ */
 public class Graphics extends JFrame {
 
-    private int displayState;
+    int displayState;
     JFrame frame = new JFrame();
     Container con = this.getContentPane();
     JPanel activePanel;
     ArrayList<JButton> buttonList = new ArrayList<JButton>();
     ArrayList<JPanel> panelList = new ArrayList<JPanel>();
+    ArrayList<JPanel> characterList = new ArrayList<JPanel>();
 
+    /**
+     * This is the constructor for the graphics class which sets up some of the
+     * JFrame attributes
+     */
     public Graphics() {
         this.displayState = 0;
-        // this.setBounds(10, 10, 1280, 760);
-        this.setBounds(0, 0, 1295, 748);
+        this.setBounds(10, 10, 1296, 760);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
     }
 
-    // This will display different things based on the displayState
+    /**
+     * This method will display different scenes depending on the displayState
+     * 
+     * @param displayNum
+     */
     public void sceneDisplay(int displayNum) {
         switch (displayNum) {
-        case 0:
-            System.out.println("Title Screen");
+        case 0: // Title Screen
 
             ImageIcon titleImage = new ImageIcon(".//res//TitleScreen.png");
             JLabel titleLabel = new JLabel(titleImage);
-
             JPanel titlePanel = new JPanel();
             titlePanel.setBounds(0, 0, 1280, 720);
             activePanel = titlePanel;
 
-            // titlePanel.add(titleLabel);
-            // con.add(titlePanel);
-
-            ImageIcon startButton = new ImageIcon(".//res//StartButton.png");
-            JButton button = new JButton(startButton);
+            ImageIcon startButtonImage = new ImageIcon(".//res//StartButton.png");
+            JButton button = new JButton(startButtonImage);
             ActionListener listener = new ClickListener();
             button.addActionListener(listener);
-            button.setBounds(483, 390, 305, 95); // 305, 95
+            button.setBounds(320, 390, 305, 95); // 305, 95
             buttonList.add(button);
+
+            ImageIcon sizeSmallButtonImage = new ImageIcon(".//res//SizeSmallButton.png");
+            JButton ssbutton = new JButton(sizeSmallButtonImage);
+            ActionListener ssListener = new SmallMazeButton();
+            ssbutton.addActionListener(ssListener);
+            ssbutton.setBounds(315, 490, 154, 90); // 154, 90
+            buttonList.add(ssbutton);
+
+            ImageIcon sizeMediumButtonImage = new ImageIcon(".//res//SizeMediumButton.png");
+            JButton smbutton = new JButton(sizeMediumButtonImage);
+            ActionListener smListener = new MediumMazeButton();
+            smbutton.addActionListener(smListener);
+            smbutton.setBounds(474, 490, 154, 90); // 154, 90
+            buttonList.add(smbutton);
+
+            ImageIcon sizeLargeButtonImage = new ImageIcon(".//res//SizeLargeButton.png");
+            JButton slbutton = new JButton(sizeLargeButtonImage);
+            ActionListener slListener = new LargeMazeButton();
+            slbutton.addActionListener(slListener);
+            slbutton.setBounds(638, 490, 154, 90); // 154, 90
+            buttonList.add(slbutton);
+
+            ImageIcon sizeMaxButtonImage = new ImageIcon(".//res//SizeMaxButton.png");
+            JButton sMaxButton = new JButton(sizeMaxButtonImage);
+            ActionListener sMaxListener = new MaxMazeButton();
+            sMaxButton.addActionListener(sMaxListener);
+            sMaxButton.setBounds(797, 490, 154, 90); // 154, 90
+            buttonList.add(sMaxButton);
+
+            ImageIcon instructionsButtonImage = new ImageIcon(".//res//InstructionsButton.png");
+            JButton instructionsButton = new JButton(instructionsButtonImage);
+            ActionListener goToInstructionsListener = new GoToInstructionsButton();
+            instructionsButton.addActionListener(goToInstructionsListener);
+            instructionsButton.setBounds(643, 390, 305, 95); // 305, 95
+            buttonList.add(instructionsButton);
 
             titlePanel.add(titleLabel);
             con.add(button);
+            con.add(ssbutton);
+            con.add(smbutton);
+            con.add(slbutton);
+            con.add(sMaxButton);
+            con.add(instructionsButton);
             con.add(titlePanel);
 
             break;
-        case 1:
-            System.out.println("Maze");
+        case 1: // Maze Screen
 
-            // I want the window to resize to the maze size, but I might have to close the
-            // window and open a new one that is the correct size...
             int mazeSizeX = MazeGame.theMaze.x * 64; // Mutiply block count by size
             int mazeSizeY = MazeGame.theMaze.y * 64;
             MazeGame.theMaze.display(MazeGeneration.maze);
@@ -84,29 +125,88 @@ public class Graphics extends JFrame {
             MousePressListener mpl = new MousePressListener();
             mazePanel.addMouseListener(mpl);
 
+            new KeyPressListener();
+
             ImageIcon XButton = new ImageIcon(".//res//XButton.png");
             JButton backButton = new JButton(XButton);
             ActionListener goHome = new GoToHomeScreen();
             backButton.addActionListener(goHome);
-            backButton.setBounds(1210, 10, 60, 60); // 60, 60
+            backButton.setBounds(1218, 5, 60, 60); // 60, 60
             buttonList.add(backButton);
 
             con.add(backButton);
             con.add(mazePanel);
 
             break;
-        case 2:
+        case 2: // Complete! Screen
+
+            JPanel blankPanel = new JPanel();
+            blankPanel.setBackground(new Color(188, 190, 192));
+            blankPanel.setBounds(0, 0, 1280, 720);
+            activePanel = blankPanel;
+
+            ImageIcon completeMaze = new ImageIcon(".//res//Complete.png");
+            JLabel completeLabel = new JLabel(completeMaze);
+            JPanel completePanel = new JPanel();
+            completePanel.setBackground(new Color(188, 190, 192));
+            completePanel.setBounds(395, 270, 490, 190); // 478, 178
+            completePanel.add(completeLabel);
+            panelList.add(completePanel);
+
+            // ImageIcon saveButtonImage = new ImageIcon(".//res//SaveButton.png");
+            // JButton savebutton = new JButton(saveButtonImage);
+            // ActionListener saveListener = new SaveMazeButton();
+            // savebutton.addActionListener(saveListener);
+            // savebutton.setBounds(474, 490, 154, 90); // 154, 90
+            // buttonList.add(savebutton);
+
+            ImageIcon menuButtonImage = new ImageIcon(".//res//MenuButton.png");
+            JButton menuButton = new JButton(menuButtonImage);
+            ActionListener menuListener = new GoToHomeScreen();
+            menuButton.addActionListener(menuListener);
+            menuButton.setBounds(563, 490, 154, 90); // 154, 90
+            buttonList.add(menuButton);
+
+            // con.add(savebutton);
+            con.add(menuButton);
+            con.add(completePanel);
+            con.add(blankPanel);
 
             break;
-        case 3:
+        case 3: // Instructions Screen
+            // This would be for the save/load menu, but I don't have time to implement that
+            // feature. I'd need to think more about it first
+            // Instead I decided to make this the spot for the instructions.
 
+            ImageIcon instuctionsImage = new ImageIcon(".//res//InstructionsScreen.png");
+            JLabel instructionsLabel = new JLabel(instuctionsImage);
+            JPanel instructionsPanel = new JPanel();
+            instructionsPanel.add(instructionsLabel);
+            instructionsPanel.setBounds(0, 0, 1280, 720);
+            activePanel = instructionsPanel;
+
+            ImageIcon instructionsXButton = new ImageIcon(".//res//XButton.png");
+            JButton instructionsBackButton = new JButton(instructionsXButton);
+            ActionListener anotherGoHome = new GoToHomeScreen();
+            instructionsBackButton.addActionListener(anotherGoHome);
+            instructionsBackButton.setBounds(1218, 5, 60, 60); // 60, 60
+            buttonList.add(instructionsBackButton);
+
+            con.add(instructionsBackButton);
+            con.add(instructionsPanel);
             break;
         default:
             System.out.println("Unknown number/ not yet implemented");
         }
     }
 
-    // This will create a maze block at the location parameters
+    /**
+     * This method will create a maze block at the location parameters
+     * 
+     * @param type
+     * @param x
+     * @param y
+     */
     public void mazeDisplay(char type, int x, int y) { // Block type and where to display
         ImageIcon mazeBlockImage = new ImageIcon();
 
@@ -119,10 +219,10 @@ public class Graphics extends JFrame {
             mazeBlockImage = new ImageIcon(".//res//4.png");
             break;
         case 'E':
-            mazeBlockImage = new ImageIcon(".//res//Exit.png");
+            mazeBlockImage = new ImageIcon(".//res//E.png");
             break;
         case 'S':
-            mazeBlockImage = new ImageIcon(".//res//Entrance.png");
+            mazeBlockImage = new ImageIcon(".//res//S.png");
             break;
 
         case '4':
@@ -186,115 +286,180 @@ public class Graphics extends JFrame {
 
         JPanel mbPanel = new JPanel();
         mbPanel.setBackground(new Color(0, 0, 0, 0));
-        // mbPanel.setBounds(x, y, 157, 157); // 157, 157 for Large Blocks
-        mbPanel.setBounds(x, y, 64, 74); // 64, 64 for Small Blocks
+        mbPanel.setBounds(x, y, 69, 74); // Block size is 64, 64, but use 69, 74 to look nice
 
         mbPanel.add(mbLabel);
         panelList.add(mbPanel);
         con.add(mbPanel);
     }
 
-    // This will display the character at the current location
-    public void characterDisplay(char dir, int x, int y){
+    /**
+     * This method will display the character at the current location
+     * 
+     * @param c
+     */
+    public void characterDisplay(ControllableCharacter c) {
         ImageIcon characterImage = new ImageIcon();
 
-        if(dir == 'N'){
+        if (c.dir == 'N') {
             characterImage = new ImageIcon(".//res//CharacterN.png");
-        } else if(dir == 'E'){
+        } else if (c.dir == 'E') {
             characterImage = new ImageIcon(".//res//CharacterE.png");
-        } else if(dir == 'S'){
+        } else if (c.dir == 'S') {
             characterImage = new ImageIcon(".//res//CharacterS.png");
-        } else if(dir == 'W'){
+        } else if (c.dir == 'W') {
             characterImage = new ImageIcon(".//res//CharacterW.png");
         }
 
         JLabel characterLabel = new JLabel(characterImage);
         JPanel characterPanel = new JPanel();
         characterPanel.setBackground(new Color(0, 0, 0, 0));
-        characterPanel.setBounds(x, y, 64, 74);
+        characterPanel.setBounds(c.x * 64, c.y * 64, 64, 74);
         characterPanel.add(characterLabel);
+        characterList.add(characterPanel);
         con.add(characterPanel);
+
     }
 
-    // This will refresh the frame when it is called
+    /**
+     * This method will refresh the frame when it is called
+     */
     public void refresh() {
         validate();
         repaint();
     }
 
+    /**
+     * This method will hide the active panel so a new one can be displayed
+     */
     public void hideActivePanel() {
         if (activePanel != null) {
             activePanel.setVisible(false);
         }
-        for(JButton button: buttonList){
+        for (JButton button : buttonList) {
             button.setVisible(false);
-           // buttonList.remove(button);
         }
-        for(JPanel panel: panelList){
+        for (JPanel panel : panelList) {
             panel.setVisible(false);
-           // panelList.remove(panel);
         }
-
+        for (JPanel character : characterList) {
+            character.setVisible(false);
+        }
     }
 
 }
 
-// This is the button that makes a new maze
+/**
+ * This class makes the button that makes a new maze
+ */
 class ClickListener implements ActionListener {
+
+    static int paramX = 10;
+    static int paramY = 10;
+    static boolean firstMaze = true;
 
     public void actionPerformed(ActionEvent event) {
 
-        MazeGame.theMaze = new MazeGeneration(1, 10, 10);
-        MazeGame.cc = new ControllableCharacter('N', 5, 9);
+        if (!firstMaze) { // This somehow works? Alrighty.
+            MazeGame.theMaze.mazeReset();
+        }
 
-        MazeGame.theMaze.mazeReset();
-        MazeGame.theMaze = new MazeGeneration(1, 10, 10); // Later change to user input sizes? Or just make multiple buttons that make different size mazes
-        //characterDisplay();
+        // Maze Sizes: Small: 6, 6 Medium: 10, 10 Large: 14, 10 Max: 19, 10
+        MazeGame.theMaze = new MazeGeneration(1, paramX, paramY);
+
         MazeGame.theMaze.mazeGen();
+        firstMaze = false;
+        MazeGame.cc = new ControllableCharacter('N', paramX - 1, paramY - 1);
+
         MazeGame.g.hideActivePanel();
         MazeGame.g.sceneDisplay(1);
         MazeGame.g.refresh();
     }
 }
 
+/**
+ * This class makes the button that sets the maze to small size parameters
+ */
+class SmallMazeButton implements ActionListener {
 
-// This is the button that returns to the home screen
+    public void actionPerformed(ActionEvent event) {
+        ClickListener.paramX = 6;
+        ClickListener.paramY = 6;
+    }
+}
+
+/**
+ * This class makes the button that sets the maze to small medium size
+ * parameters
+ */
+class MediumMazeButton implements ActionListener {
+
+    public void actionPerformed(ActionEvent event) {
+        ClickListener.paramX = 10;
+        ClickListener.paramY = 10;
+    }
+}
+
+/**
+ * This class makes the button that sets the maze to large size parameters
+ */
+class LargeMazeButton implements ActionListener {
+
+    public void actionPerformed(ActionEvent event) {
+        ClickListener.paramX = 14;
+        ClickListener.paramY = 10;
+    }
+}
+
+/**
+ * This class makes the button that sets the maze to max size parameters
+ */
+class MaxMazeButton implements ActionListener {
+
+    public void actionPerformed(ActionEvent event) {
+        ClickListener.paramX = 19;
+        ClickListener.paramY = 10;
+    }
+}
+
+/**
+ * This class makes the button that switches the scene display to the home
+ * screen
+ */
 class GoToHomeScreen implements ActionListener {
 
     public void actionPerformed(ActionEvent event) {
         MazeGame.g.hideActivePanel();
         MazeGame.g.sceneDisplay(0);
         MazeGame.g.refresh();
+
     }
 }
 
-// This is the MouseListener that moves the character
-class MousePressListener implements MouseListener {
+/**
+ * This class makes the button that switches the scene display to the
+ * instructions screen
+ */
+class GoToInstructionsButton implements ActionListener {
 
-  public void mouseClicked(MouseEvent event) {
-      int x = event.getX();
-      int y = event.getY();
+    public void actionPerformed(ActionEvent event) {
+        MazeGame.g.hideActivePanel();
+        MazeGame.g.sceneDisplay(3);
+        MazeGame.g.refresh();
 
-      if(MazeGame.cc.dir == 'N' && y >= MazeGeneration.currentY){
-          System.out.println("Up");
-          MazeGeneration.currentY--;
-      } else if(MazeGame.cc.dir == 'E' && x >= MazeGeneration.currentX){
-          System.out.println("Right");
-          MazeGeneration.currentX++;
-      } else if(MazeGame.cc.dir == 'S' && y < MazeGeneration.currentY){
-          System.out.println("Down");
-          MazeGeneration.currentY++;
-      } else if(MazeGame.cc.dir == 'W' && x < MazeGeneration.currentX){
-          System.out.println("Left");
-          MazeGeneration.currentX--;
-      }
+    }
+}
 
-  }
+/**
+ * This class makes the button that switches the scene display to the save
+ * screen (Currently Unused)
+ */
+class SaveMazeButton implements ActionListener {
 
+    public void actionPerformed(ActionEvent event) {
+        MazeGame.g.hideActivePanel();
+        MazeGame.g.sceneDisplay(2);
+        MazeGame.g.refresh();
 
-  public void mouseEntered(MouseEvent event) { }
-  public void mouseExited(MouseEvent event) { }
-  public void mousePressed(MouseEvent event) { }
-  public void mouseReleased(MouseEvent event) { }
-
+    }
 }

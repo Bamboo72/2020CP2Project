@@ -1,84 +1,99 @@
 // Jacob Schwartz - 3/25/2021
-// Code originated from https://stackoverflow.com/questions/18324853/checking-if-the-mouse-is-clicked-in-java
-// as well as the Big Java textbook (Heavily modified to fit my project!)
+// This is an alternative method of controling the character
 
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
- * This class handles the mouse events that move the character
+ * This class handles the key events that move the character
  */
-class MousePressListener implements MouseListener {
+class KeyPressListener extends JFrame implements KeyListener {
 
-    /**
-     * This method detects when the mouse is clicked and moves the character
-     * depending on a variety of conditions (character direction and location)
-     */
-    public void mouseClicked(MouseEvent event) {
-        int x = event.getX();
-        int y = event.getY();
+    JFrame keyFrame;
+
+    public KeyPressListener() {
+
+        JPanel p = new JPanel();
+        JLabel label = new JLabel("Key Listener!");
+        p.add(label);
+        add(p);
+        addKeyListener(this);
+        setBounds(1280, -200, 10, 10);
+        setVisible(true);
+    }
+
+    // Empty method
+    public void keyPressed(KeyEvent event) {
+    }
+
+    // Empty method
+    public void keyTyped(KeyEvent event) {
+    }
+
+    public void keyReleased(KeyEvent event) {
+
         ControllableCharacter cc = MazeGame.cc;
 
-        int ccx = cc.x * 64;
-        int ccy = cc.y * 64;
-
-        switch (cc.dir) { // I'd like to detect diagonal boundaries, but I'm not sure how
-        // y < ccy && x < (ccx + 32) * ccy && x > -ccx * ccy
+        switch (cc.dir) {
 
         case 'N':
-            if (y < ccy && x < ccx + 64 && x > ccx) {
+            if (event.getKeyCode() == KeyEvent.VK_UP) {
                 if (allowedMoveCheck('N')) {
                     System.out.println("Go Forward");
                     cc.y--;
                 }
 
-            } else if (x > ccx + 64) {
+            } else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
 
                 System.out.println("Turn Right");
                 cc.turnClockwise('N');
-            } else if (x < ccx) {
+            } else if (event.getKeyCode() == KeyEvent.VK_LEFT) {
                 System.out.println("Turn Left");
                 cc.turnCounterClockwise('N');
             }
             break;
         case 'E':
-            if (x > ccx && y < ccy + 64 && y > ccy) {
+            if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
                 if (allowedMoveCheck('E')) {
                     System.out.println("Go Forward");
                     cc.x++;
                 }
-            } else if (y > ccy + 64) {
+            } else if (event.getKeyCode() == KeyEvent.VK_DOWN) {
                 System.out.println("Turn Right");
                 cc.turnClockwise('E');
-            } else if (y < ccy) {
+            } else if (event.getKeyCode() == KeyEvent.VK_UP) {
                 System.out.println("Turn Left");
                 cc.turnCounterClockwise('E');
             }
             break;
         case 'S':
-            if (y > ccy && x < ccx + 64 && x > ccx) {
+            if (event.getKeyCode() == KeyEvent.VK_DOWN) {
                 if (allowedMoveCheck('S')) {
                     System.out.println("Go Forward");
                     cc.y++;
                 }
-            } else if (x < ccx) {
+            } else if (event.getKeyCode() == KeyEvent.VK_LEFT) {
                 System.out.println("Turn Right");
                 cc.turnClockwise('S');
-            } else if (x > ccx + 64) {
+            } else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
                 System.out.println("Turn Left");
                 cc.turnCounterClockwise('S');
             }
             break;
         case 'W':
-            if (x < ccx && y > ccy && y < ccy + 64) {
+            if (event.getKeyCode() == KeyEvent.VK_LEFT) {
                 if (allowedMoveCheck('W')) {
                     System.out.println("Go Forward");
                     cc.x--;
                 }
-            } else if (y < ccy) {
+            } else if (event.getKeyCode() == KeyEvent.VK_UP) {
                 System.out.println("Turn Right");
                 cc.turnClockwise('W');
-            } else if (y > ccy + 64) {
+            } else if (event.getKeyCode() == KeyEvent.VK_DOWN) {
                 System.out.println("Turn Left");
                 cc.turnCounterClockwise('W');
             }
@@ -98,16 +113,11 @@ class MousePressListener implements MouseListener {
             MazeGame.g.refresh();
 
         }
+        // keyFrame.dispose(); // This generates a java.lang.NullPointerException
     }
 
-    /**
-     * This method returns whether moving from a tile is allowed depending on the
-     * tile and character direction
-     * 
-     * @param dir
-     * @return boolean allowed or not depending on the tile type and character
-     *         direction
-     */
+    // This method returns whether moving from a tile is allowed depending on the
+    // tile and direction
     public boolean allowedMoveCheck(char dir) {
         boolean allowed = false;
         ControllableCharacter cc = MazeGame.cc;
@@ -126,7 +136,6 @@ class MousePressListener implements MouseListener {
             break;
         case 'S':
             allowed = true;
-            break;
 
         case '4':
             allowed = false;
@@ -239,30 +248,6 @@ class MousePressListener implements MouseListener {
         }
 
         return allowed;
-    }
-
-    /**
-     * Blank method
-     */
-    public void mouseEntered(MouseEvent event) {
-    }
-
-    /**
-     * Blank method
-     */
-    public void mouseExited(MouseEvent event) {
-    }
-
-    /**
-     * Blank method
-     */
-    public void mousePressed(MouseEvent event) {
-    }
-
-    /**
-     * Blank method
-     */
-    public void mouseReleased(MouseEvent event) {
     }
 
 }
