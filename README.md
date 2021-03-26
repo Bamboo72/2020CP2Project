@@ -13,4 +13,4 @@ My project evolved quite a bit, as you can by how different the original class d
 - I also wanted to include variations to the maze such as fetch quests, limited vision, or time trials.
 - A save and load feature was planned, but cut because I needed more time to think it through.
 ## Documentation: 
-* file:///C:/Users/jasch/OneDrive/Documents/MazeGame/allclasses.html
+* https://github.com/Bamboo72/2020CP2Project/tree/main/doc
