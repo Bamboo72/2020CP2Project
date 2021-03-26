@@ -9,12 +9,11 @@ The Year 2 Concepts I focused on were:
 - Collections
 - I also used 1 ternary statement, inheritance with JFrame, and implementation of Key and Mouse Listeners
 
-Here's the class diagram for my project: https://drive.google.com/file/d/1EtIvwePseLr5X5XyhewRGlthrah-qXjG/view?usp=sharing
-![ClassDiagram](https://github.com/Bamboo72/2020CP2Project/blob/main/images/IndividualProjectClassDiagram.jpg)
-My project evolved quite a bit, as you can by how different the original class diagram was:
+### Here's the class diagram for my project:
+![ClassDiagram](https://github.com/Bamboo72/2020CP2Project/blob/main/images/IndividualProjectClassDiagram2.jpg)
 
-![MazeGameGUI](https://github.com/Bamboo72/2020CP2Project/blob/main/images/MazeGameGUI.jpg)
-![DatingGameGUI](https://github.com/Bamboo72/2020CP2Project/blob/main/images/DatingSimGUI%20(1).jpg)
+### My project evolved quite a bit, as you can by how different the original class diagram was:
+![FirstClassDiagram](https://github.com/Bamboo72/2020CP2Project/blob/main/images/IndividualProjectClassDiagram.jpg)
 
 ### Ideas for Future Updates
 - My original plan was to incorporate story or semi-dating sim elements to the game, and I'd like to try adding that someday.
